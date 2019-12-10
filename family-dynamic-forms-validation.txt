@@ -1,0 +1,208 @@
+<!------------------------------html--------------------------------->          
+
+  <div>
+              <form  [formGroup]="familyForm" (ngSubmit)="onSubmit()">
+                
+              <table class="TFtable">  
+
+                  
+                <tr > 
+                  
+        
+                <th>NAME</th><th>RELATIONSHIP </th>  <th>D.O.B</th>  <th>AGE</th> <th>OCCUPTION</th> <th>CONTACT</th> 
+               
+                  <th><button mat-raised-button [color]="'success'"  [disabled]="loading" (click)="addrelationship(i)">ADD</button>
+                  </th>
+                 
+                  <th><button mat-raised-button   color="warn" (click)="removerelationship(i)">REMOVE</button></th>
+                </tr>  
+
+             
+                
+                <tr  *ngFor="let relationship of relationship; let i = index;">  
+               
+               
+                     <td>
+                      <div class="form-group">
+                          <input type="text"  [(ngModel)]="relationship.name"  name="name" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                          <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                              <div *ngIf="f.name.errors.required"> Name is required</div>
+                          </div>
+                        
+                        </div>
+                        </td>
+                       
+               
+                
+                    <td>
+                        <div class="form-group">
+                        <input type="text"   [(ngModel)]="relationship.relation"  name="relation" formControlName="relation" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.relation.errors }" > 
+                        <div *ngIf="submitted && f.relation.errors" class="invalid-feedback">
+                            <div *ngIf="f.relation.errors.required">Relation is required</div>
+                        </div>
+                    </div>
+
+                    </td>  
+                 
+                
+                     <td>
+                        <div class="form-group">
+                      <input type="text" [(ngModel)]="relationship.dob"  name="dob"  class="form-control" formControlName="dob" [ngClass]="{ 'is-invalid': submitted && f.dob.errors }" >
+                      <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
+                          <div *ngIf="f.dob.errors.required">Dob is required</div>
+                      </div>
+
+                      </div>
+
+
+                    </td>
+
+                    <td>
+                        <div class="form-group">
+                      <input type="text"  [(ngModel)]="relationship.age" name="age"  class="form-control" formControlName="age" [ngClass]="{ 'is-invalid': submitted && f.age.errors }"> 
+                      <div *ngIf="submitted && f.age.errors" class="invalid-feedback">
+                          <div *ngIf="f.age.errors.required">name is required</div>
+                      </div>
+                   </div>
+                    </td>  
+
+
+                     <td>
+                        <div class="form-group">
+                      <input type="text" [(ngModel)]="relationship.occuption" name="occuption" formControlName="occuption" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.occuption.errors }">
+
+                      <div *ngIf="submitted && f.occuption.errors" class="invalid-feedback">
+                          <div *ngIf="f.occuption.errors.required">occuption is required</div>
+                      </div>
+                      </div>
+                    </td>
+
+                  <td>
+                      <div class="form-group">
+                   <input type="text" [(ngModel)]="relationship.contact" name="contact" formControlName="contact" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.contact.errors }" >
+                   
+                   <div *ngIf="submitted && f.contact.errors" class="invalid-feedback">
+                      <div *ngIf="f.contact.errors.required">contact is required</div>
+                  </div>
+                   </div>
+                  </td>
+
+                  
+               
+               
+                  <td>
+                      <div class="form-group">
+                     <button class="btn btn-info">save</button>
+                     </div>
+                   </td>
+                
+                </tr>  
+                 
+              
+                </table> 
+          </form>
+            </div>
+<!--------------------------css------------------------------>
+.example-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .example-container > * {
+    width: 100%;
+    padding-top:20px;
+   
+  }
+ 
+  
+  
+  
+
+.example{
+  width:110%;
+  
+}
+
+
+.mat-success {
+  background-color: green;
+  color: #fff;
+}
+th{
+  text-align:center;
+}
+
+<!----------------------------ts------------------------------->
+
+import { Component, OnInit } from '@angular/core';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+
+@Component({
+  selector: 'app-family',
+  templateUrl: './family.component.html',
+  styleUrls: ['./family.component.scss']
+})
+export class FamilyComponent implements OnInit {
+  
+  public relationship: any[] =[{
+    name:'',
+    relation:'',
+    dob:'',
+   age:'',
+ 
+    occuption:'',
+    contact:''
+    
+    }];
+    addrelationship(i:number) {
+      this.relationship.push({
+      name:'',
+      relation:'',
+      dob:'',
+     age:'',
+   
+      occuption:'',
+      contact:''
+      
+      });
+    }
+    removerelationship(i: number) {
+      this.relationship.splice(i, 1);
+    }
+   familyForm: FormGroup;
+    submitted = false;
+
+    constructor(private formBuilder: FormBuilder) { }
+
+    ngOnInit() {
+        this.familyForm = this.formBuilder.group({
+            name: ['', Validators.required],
+            relation: ['', Validators.required],
+            dob: ['', Validators.required],
+            age: ['', Validators.required],
+
+            occuption: ['', Validators.required],
+            contact: ['', Validators.required],
+
+
+
+           
+        });
+    }
+
+    // convenience getter for easy access to form fields
+    get f() { return this.familyForm.controls; }
+
+    onSubmit() {
+        this.submitted = true;
+
+        // stop here if form is invalid
+        if (this.familyForm.invalid) {
+            return;
+        }
+console.log(this.familyForm.value);
+        alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.familyForm.value))
+    }
+
+}
+
